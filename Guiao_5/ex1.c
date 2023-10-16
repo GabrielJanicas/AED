@@ -1,17 +1,18 @@
 #include <stdio.h>
 
-unsigned int func1(unsigned int n);
-unsigned int func2(unsigned int n);
-unsigned int func3(unsigned int n);
+int func1(int n);
+int func2(int n);
+int func3(int n);
 
 static int calls;
 
 int main(void)
 {
-	unsigned int res;
+	int res;
 
-	for (int i = 0; i < 65; i++)
+	for (int i = 1; i < 65; i++)
 	{
+		printf("%3d: ", i);
 		calls = 0;
 		res = func1(i);
 		printf("Result1: %d\tCalls: %d\t", res, calls);
@@ -27,35 +28,35 @@ int main(void)
 	return 0;
 }
 
-unsigned int func1(unsigned int n)
+int func1(int n)
 {
-	calls++;
 	if (n == 1)
 	{
 		return 1;
 	}
 	else
 	{
-		return (int)func1(n / 2) + n;
+		calls++;
+		return func1(n / 2) + n;
 	}
 }
 
-unsigned int func2(unsigned int n)
+int func2(int n)
 {
-	calls++;
+
 	if (n == 1)
 	{
 		return 1;
 	}
 	else
 	{
-		return (int)func2(n / 2) + (int)func2(n / 2) + n;
+		calls += 2;
+		return func2(n / 2) + func2((n + 1) / 2) + n;
 	}
 }
 
-unsigned int func3(unsigned int n)
+int func3(int n)
 {
-	calls++;
 	if (n == 1)
 	{
 		return 1;
@@ -64,18 +65,13 @@ unsigned int func3(unsigned int n)
 	{
 		if (n % 2 == 0)
 		{
-			return 2 * (int)func3(n / 2) + n;
+			calls++;
+			return 2 * func3(n / 2) + n;
 		}
 		else
 		{
-			if (n % 2 == 0)
-			{
-				return 2 * (int)func3(n / 2) + n;
-			}
-			else
-			{
-				return (int)func3((n) / 2) + (int)func3((n) / 2) + n;
-			}
+			calls += 2;
+			return func3((n) / 2) + func3((n + 1) / 2) + n;
 		}
 	}
 }
